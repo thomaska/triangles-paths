@@ -1,6 +1,5 @@
 package com.suprnation
 
-import com.suprnation.model.{EmptyTriangle, MutableNode}
 import org.scalacheck.Gen
 import org.scalatest.{FreeSpec, Matchers}
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
