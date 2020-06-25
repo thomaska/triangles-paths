@@ -68,5 +68,29 @@ class MainTest extends FreeSpec with ScalaCheckPropertyChecks with Matchers {
       )
       actual.right.get shouldBe expected
     }
+
+    "calculateMaxPath should return the correct result" in {
+      val input = List(
+        List(7),
+        List(6, 3),
+        List(3, 8, 109),
+        List(11, 2, 10, 9)
+      )
+      val actual   = Main.calculateMaxPath(input)
+      val expected = List(7, 3, 109, 9)
+      actual shouldBe expected
+    }
+
+    "calculateMaxPath should return an empty path for an empty input" in {
+      val actual   = Main.calculateMaxPath(List.empty)
+      val expected = List.empty
+      actual shouldBe expected
+    }
+
+    "printpath should return the correct string" in {
+      val actual = Main.printPath(List(3, 4, 4,12))
+      val expected = "Minimal path is: 3 + 4 + 4 + 12 = 23"
+      actual shouldBe expected
+    }
   }
 }

@@ -1,14 +1,10 @@
 package com.suprnation
 
-import java.io
-
 import cats.effect.{ExitCode, IO, IOApp}
-import com.suprnation.model.{EmptyTriangle, Leaf, MutableNode, Node, TriangleError, TriangleParsingError}
+import com.suprnation.model.{TriangleError, _}
 
-import scala.annotation.tailrec
 import scala.io.StdIn
-import scala.util.{Failure, Success, Try}
-import model._
+import scala.util.Try
 
 object Main extends IOApp {
   val Eof = "EOF"
@@ -37,14 +33,18 @@ object Main extends IOApp {
   }
 
   def calculateMaxPath(input: List[List[Int]]): List[Int] = {
-    ???
+    input.fold(List.empty[Int]) { (first, second) => first
+      }
   }
+
+  def printPath: List[Int] => String = path => s"Minimal path is: ${path.mkString(" + ")} = ${path.sum}"
 
   def run(args: List[String]): IO[ExitCode] = {
     IO(println("Application minimum triangle path running"))
       .map(_ => readInput(StdIn.readLine))
       .map(validateInput)
       .map(_.map(calculateMaxPath))
+      .map(_.map(p => println(printPath(p))))
       .map(_ => ExitCode.Success)
   }
 
