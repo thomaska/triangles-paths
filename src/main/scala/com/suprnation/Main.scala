@@ -12,18 +12,6 @@ import scala.util.{Failure, Success, Try}
 object Main extends IOApp {
   val Eof = "EOF"
 
-//  > 7
-//  > 6 3
-//  > 3 8 5
-//  > 11 2 10 9
-  def parseRoot(nodes: Array[Int]): Either[TriangleError, MutableNode] = {
-    if (nodes.length != 1)
-      Left(TriangleParsingError(new Throwable("There must be exactly one value as root of the triangle")))
-    else Right(MutableNode(nodes.head))
-  }
-
-  def toImmutableTriangle: MutableNode => Node = ???
-
   @tailrec
   def parseTriangleLevel(prev: List[MutableNode],
                          nodes: List[Int],
@@ -32,7 +20,7 @@ object Main extends IOApp {
       Left(TriangleParsingError(new Throwable(s"Nodes: $nodes are invalid")))
     else {
       (prev, nodes) match {
-        case (Nil, last::Nil) => Right(acc :+ MutableNode(last))
+        case (Nil, last :: Nil) => Right(acc :+ MutableNode(last))
         case (parent :: prevLvlTail, left :: right :: newLvlTail) => {
           val l = MutableNode(left)
           val r = MutableNode(right)
@@ -49,7 +37,7 @@ object Main extends IOApp {
   def readTriangle(getLine: () => String,
                    prev: List[MutableNode],
                    root: Option[MutableNode]): Either[TriangleError, MutableNode] = {
-    val line = getLine()
+    val line = getLine().stripMargin
     if (line == Eof)
       root.toRight(EmptyTriangle)
     else {
@@ -61,17 +49,15 @@ object Main extends IOApp {
       if (parsed.isLeft)
         Left(TriangleParsingError(parsed.left.get))
       else {
-        val nodes     = parsed.right.get
-        val rootValue = root.fold(parseRoot(nodes))(Right(_))
-        if (rootValue.isLeft)
-          rootValue
+        val nodes = parsed.right.get
+        val cur = parseTriangleLevel(prev, nodes.toList, List.empty)
+
+        if (cur.isLeft)
+          Left(cur.left.get)
+        else if (cur.isRight && root.isEmpty && cur.right.get.length == 1)
+          readTriangle(getLine, cur.right.get, Some(cur.right.get.head))
         else {
-          val cur = parseTriangleLevel(prev, nodes.toList, List.empty)
-          if (cur.isLeft)
-            Left(cur.left.get)
-          else {
-            readTriangle(getLine, cur.right.get, rootValue.toOption)
-          }
+          readTriangle(getLine, cur.right.get, root)
         }
       }
     }
