@@ -32,12 +32,22 @@ object Main extends IOApp {
     })
   }
 
-  def calculateMaxPath(input: List[List[Int]]): List[Int] = {
-    input.fold(List.empty[Int]) { (first, second) => first
+  def calculateMaxPath(input: List[List[Int]]): Path = {
+    val paths = input.foldRight(List.empty[Path]) { (first: List[Int], second: List[Path]) =>
+
+      val headSafe = if (second.nonEmpty) second.dropRight(1) else second
+      val tailSafe = if (second.nonEmpty) second.tail else second
+      first.zipWithIndex.map { case (node, index) =>
+        val left = if(headSafe.isEmpty) Path(node) else headSafe(index) + node
+        val right = if(tailSafe.isEmpty) Path(node) else tailSafe(index) + node
+        if(left.cost < right.cost) left else right
       }
+    }
+    println(paths.mkString("\n"))
+    paths.headOption.getOrElse(Path.empty)
   }
 
-  def printPath: List[Int] => String = path => s"Minimal path is: ${path.mkString(" + ")} = ${path.sum}"
+  def printPath: Path => String = path => s"Minimal path is: ${path.nodes.mkString(" + ")} = ${path.cost}"
 
   def run(args: List[String]): IO[ExitCode] = {
     IO(println("Application minimum triangle path running"))

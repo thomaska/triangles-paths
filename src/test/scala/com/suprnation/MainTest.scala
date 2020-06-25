@@ -1,5 +1,6 @@
 package com.suprnation
 
+import com.suprnation.model.Path
 import org.scalacheck.Gen
 import org.scalatest.{FreeSpec, Matchers}
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
@@ -76,18 +77,18 @@ class MainTest extends FreeSpec with ScalaCheckPropertyChecks with Matchers {
         List(11, 2, 10, 9)
       )
       val actual   = Main.calculateMaxPath(input)
-      val expected = List(7, 3, 109, 9)
+      val expected = Path(7, 6, 3, 2)
       actual shouldBe expected
     }
 
     "calculateMaxPath should return an empty path for an empty input" in {
       val actual   = Main.calculateMaxPath(List.empty)
-      val expected = List.empty
+      val expected = Path.empty
       actual shouldBe expected
     }
 
     "printpath should return the correct string" in {
-      val actual = Main.printPath(List(3, 4, 4,12))
+      val actual   = Main.printPath(Path(3, 4, 4, 12))
       val expected = "Minimal path is: 3 + 4 + 4 + 12 = 23"
       actual shouldBe expected
     }
