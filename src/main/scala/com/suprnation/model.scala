@@ -7,4 +7,10 @@ package object model {
   }
   case class Intermediate(value: Int, left: Node, right: Node) extends Node
   case class Leaf(value: Int)                                  extends Node
+
+  case class MutableNode(value: Int, var left: MutableNode = null, right: MutableNode = null)
+
+  sealed trait TriangleError
+  case object EmptyTriangle                      extends TriangleError
+  case class TriangleParsingError(ex: Throwable) extends TriangleError
 }
