@@ -8,6 +8,7 @@ import com.suprnation.model.{EmptyTriangle, Leaf, MutableNode, Node, TriangleErr
 import scala.annotation.tailrec
 import scala.io.StdIn
 import scala.util.{Failure, Success, Try}
+import model._
 
 object Main extends IOApp {
   val Eof = "EOF"
@@ -70,9 +71,26 @@ object Main extends IOApp {
     else readInput(readLine, cur :+ line)
   }
 
+  def validateInput(input: List[String]): Either[TriangleError, List[List[Int]]] = {
+    val parsedInts = Try {
+      input.map(_.split("\\s").toList.map(_.toInt))
+    }.toTriangleError()
+
+    parsedInts.flatMap((l: List[List[Int]]) => {
+      Try {
+        l.foldLeft(List.empty[Int])((list1, list2) => {
+          if (list1.length + 1 != list2.length) throw new Error(s"List has invalid length: $list2")
+          list2
+        })
+      }.toTriangleError()
+        .map(_ => l)
+    })
+  }
+
   def run(args: List[String]): IO[ExitCode] = {
     IO(println("Application minimum triangle path running"))
       .map(_ => readInput(StdIn.readLine))
+      .map(validateInput)
       .map(_ => ExitCode.Success)
   }
 

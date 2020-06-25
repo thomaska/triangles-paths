@@ -20,9 +20,53 @@ class MainTest extends FreeSpec with ScalaCheckPropertyChecks with Matchers {
           |""".stripMargin.split("\n").iterator
       val actual = Main.readInput(input.next)
       val expected = List(
-        "7", "6 3", "3 8 5", "11 2 10 9"
+        "7",
+        "6 3",
+        "3 8 5",
+        "11 2 10 9"
       )
       actual shouldBe expected
+    }
+
+    "validateInput should return an error when input is not integers" in {
+      val input =
+        """7
+          |6 3
+          |3 8 aa
+          |11 2 10 9
+          |EOF
+          |""".stripMargin.split("\n")
+      val actual = Main.validateInput(input.toList)
+      actual shouldBe a[Left[_, _]]
+    }
+
+    "validateInput should return an error when list sizes are not correct" in {
+      val input =
+        """7
+          |6 3
+          |3 8
+          |11 2 10 9
+          |EOF
+          |""".stripMargin.split("\n")
+      val actual = Main.validateInput(input.toList)
+      actual shouldBe a[Left[_, _]]
+    }
+
+    "validateInput should the correct input when there is no error" in {
+      val input =
+        """7
+          |6 3
+          |3 8 109
+          |11 2 10 9
+          |""".stripMargin.split("\n")
+      val actual = Main.validateInput(input.toList)
+      val expected = List(
+        List(7),
+        List(6, 3),
+        List(3, 8, 109),
+        List(11, 2, 10, 9)
+      )
+      actual.right.get shouldBe expected
     }
 
     "parseTriangleLevel should return the correct nodes for the new level if the previous level is the root" in {
