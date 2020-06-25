@@ -1,2 +1,1 @@
 - The triangle node values are integers
-- The triangle essentially is a full binary tree

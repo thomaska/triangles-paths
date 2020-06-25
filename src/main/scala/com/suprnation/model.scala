@@ -4,10 +4,12 @@ import scala.util.Try
 
 package object model {
 
-  sealed trait TriangleError
-  case object EmptyTriangle                        extends TriangleError
-  case class InvalidListSizeError(list: List[Int]) extends TriangleError
-  case class TriangleParsingError(ex: Throwable)   extends TriangleError
+  sealed trait TriangleError {
+    def message: String
+  }
+  case class TriangleParsingError(ex: Throwable) extends TriangleError {
+    override def message: String = ex.getMessage
+  }
   implicit class TriangleParsingErrorOps[A](t: Try[A]) {
     def toTriangleError() = {
       t.toEither.left.map(TriangleParsingError)
@@ -19,6 +21,7 @@ package object model {
       Path(List(node) ++ nodes, cost + node)
     }
   }
+
   object Path {
     val empty = Path(List.empty)
 

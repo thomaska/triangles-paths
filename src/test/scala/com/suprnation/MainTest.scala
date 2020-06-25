@@ -52,7 +52,7 @@ class MainTest extends FreeSpec with ScalaCheckPropertyChecks with Matchers {
       actual shouldBe a[Left[_, _]]
     }
 
-    "validateInput should the correct input when there is no error" in {
+    "validateInput should return the correct input when there is no error" in {
       val input =
         """7
           |6 3
@@ -87,7 +87,7 @@ class MainTest extends FreeSpec with ScalaCheckPropertyChecks with Matchers {
       actual shouldBe expected
     }
 
-    "printpath should return the correct string" in {
+    "printPath should return the correct string" in {
       val actual   = Main.printPath(Path(3, 4, 4, 12))
       val expected = "Minimal path is: 3 + 4 + 4 + 12 = 23"
       actual shouldBe expected
