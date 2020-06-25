@@ -1,7 +1,7 @@
-package com.suprnation
+package com.triangles
 
 import cats.effect.{ExitCode, IO, IOApp}
-import com.suprnation.model.{TriangleError, _}
+import com.triangles.model.{TriangleError, _}
 
 import scala.io.StdIn
 import scala.util.Try
@@ -56,5 +56,4 @@ object Main extends IOApp {
       .map(_.fold(e => println(e.message), p => println(printPath(p))))
       .map(_ => ExitCode.Success)
   }
-
 }

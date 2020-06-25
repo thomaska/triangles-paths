@@ -6,10 +6,10 @@ lazy val ScalaCheckVersion = "1.13.4"
 
 lazy val suprNationTriangles = (project in file(".")).settings(
   Seq(
-    name := "suprnation-triangles",
+    name := "triangles-paths",
     version := "1.0",
     scalaVersion := "2.12.11",
-    mainClass in Compile := Some("com.suprnation.Main"),
+    mainClass in Compile := Some("com.triangles.Main"),
     scalacOptions := Seq(
       "-deprecation",
       "-encoding",

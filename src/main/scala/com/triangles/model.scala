@@ -1,4 +1,4 @@
-package com.suprnation
+package com.triangles
 
 import scala.util.Try
 

@@ -1,6 +1,6 @@
-package com.suprnation
+package com.triangles
 
-import com.suprnation.model.Path
+import com.triangles.model.Path
 import org.scalacheck.Gen
 import org.scalatest.{FreeSpec, Matchers}
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
